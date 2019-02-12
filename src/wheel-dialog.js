@@ -15,20 +15,22 @@ class WheelDialog extends React.Component {
         this.initData = this.initData.bind(this)
         this.onSelectPlace = this.onSelectPlace.bind(this)
     }
+ 
     initData(data) {
         let provs = []
         let cities = []
         let dists = []
+        //获取省列表
         data.forEach((item) => {
             provs.push(item.name)
         })
-        
+        // 获取默认省的城市列表
         if (data[0].city) {
             data[0].city.forEach((item) => {
                 cities.push(item.name)
             })
         }
-
+        //默认城市的区域列表
         dists = data[0].city[0].area
 
         this.setState({
@@ -36,6 +38,7 @@ class WheelDialog extends React.Component {
             cities: cities,
             dists: dists
         })
+        this.props.selectedAdd(0, 0, 0)
     }
     onSelectPlace(type, index) {
         switch(type) {
@@ -61,7 +64,9 @@ class WheelDialog extends React.Component {
                 })
                 break;
         }
+        this.props.selectedAdd(this.state.pIndex, this.state.cIndex, this.state.dIndex) 
     }
+
     UNSAFE_componentWillReceiveProps(nextProps) {
         this.initData(nextProps.data)
     }

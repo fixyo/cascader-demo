@@ -8,25 +8,36 @@ class App extends Component {
     this.state = {
       list: []
     }
+    this.selectedAdd = this.selectedAdd.bind(this)
   }
-  render() {
-    // console.log(this.state.list)
-    return (
-      <div className="App">
-        <WheelDialog data={this.state.list}></WheelDialog>
-      </div>
-    );
+  selectedAdd(pIndex, cIndex, dIndex) {
+    let list = this.state.list
+    let address = list[pIndex].name 
+                   + ' ' 
+                   + list[pIndex].city[cIndex].name 
+                   + ' ' 
+                   + list[pIndex].city[cIndex].area[dIndex]
+    this.address = address
+    console.log(this.address)
   }
+
   componentDidMount() {
     axios.get('api/cities.json').then(res => {
       if(res.data) {
         let data = res.data
-        console.log(data)
         this.setState({
           list: data
         })
       }
     })
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <WheelDialog selectedAdd={this.selectedAdd} data={this.state.list}></WheelDialog>
+      </div>
+    );
   }
 }
 
